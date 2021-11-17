@@ -157,7 +157,8 @@ int main(void)
 	  case IDLE_STATE:
 		  HAL_UART_Transmit(&huart1,msg_state_3,sizeof(msg_state_3),1000);
 		  HAL_UART_Transmit(&huart1,msg_1,sizeof(msg_1),1000);
-		  snprintf(str_tmp,100,"CLICK BUTTON_USER TO START THE TASK, CURRENT TASK: %u",nTask); // NOT WORKING
+		  snprintf(str_tmp,100,"CLICK BUTTON_USER TO START THE TASK, CURRENT TASK: %u",nTask);
+	          HAL_UART_Transmit(&huart1,( uint8_t * )str_tmp,sizeof(str_tmp),1000);
 		  while(BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_SET);
 		  while(BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_RESET);
     	  nAttempt = 0;
