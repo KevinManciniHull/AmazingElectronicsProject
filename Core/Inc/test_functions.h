@@ -8,6 +8,8 @@
 #ifndef SRC_TEST_FUNCTIONS_H_
 #define SRC_TEST_FUNCTIONS_H_
 
+#include "humidity-tests.h"
+
 
 
 #endif /* SRC_TEST_FUNCTIONS_H_ */
