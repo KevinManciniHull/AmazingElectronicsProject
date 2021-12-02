@@ -6,6 +6,7 @@
  */
 
 #include "humidity-tests.h"
+#include "hts221.h"
 
 
 int humidityRunAutoTests(){
@@ -77,7 +78,7 @@ int humidityRunRWRTest(){
 		else{
 			printf("\r====RWR test failed!====\n");
 			return 1;
-
+		}
 	#endif
 }
 
