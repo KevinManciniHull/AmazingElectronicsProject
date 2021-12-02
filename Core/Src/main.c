@@ -24,7 +24,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stm32l475e_iot01.h"
-#include "stm32l475e_iot01_gyro.h"
 #include <math.h>
 /* USER CODE END Includes */
 
