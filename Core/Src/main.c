@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "stm32l475e_iot01.h"
 #include <math.h>
+#include "game.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -146,6 +147,10 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
 
+
+  runGame();
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -154,6 +159,11 @@ int main(void)
   {
 
     /* USER CODE END WHILE */
+
+
+	  /* ===========
+	   * TO BE MOVED
+	   * ===========
 	  switch(system_state){
 	  case TEST_STATE:
 		  HAL_UART_Transmit(&huart1,msg_state_1,sizeof(msg_state_1),1000);
@@ -193,6 +203,7 @@ int main(void)
 		  HAL_UART_Transmit(&huart1,msg_3,sizeof(msg_3),1000);
 	      system_state = OUT_OF_SERVICE_STATE;
 	  }
+	  */
 
     /* USER CODE BEGIN 3 */
   }
