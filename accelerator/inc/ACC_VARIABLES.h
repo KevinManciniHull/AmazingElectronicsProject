@@ -14,22 +14,22 @@ extern uint8_t IODIR;
 #define DEFVAL    0x03
 #define INTCON    0x04
 #define IOCON   0x05
-extern uint8_t GPPU;//activate-deactivate leds
+extern uint8_t GPPU;
 #define INTF    0x07
 extern uint8_t INTCAP;
 extern uint8_t GPIO;
 extern uint8_t   OPCODEW;
 extern uint8_t    OPCODER;
-extern char UART1_rxBuffer[12];//general use buffer
+extern char UART1_rxBuffer[12];
 #define SPI_TRANSFER_TIMEOUT    1000
 extern int16_t proba2;//variable for two's complement function conversion, y;
-extern char msg[50];//generally used char buffer
-extern int accel_loop;//accelerator main function loop activated
-extern int mainmenuloop;//accelerator main menu loop activated
+extern char msg[50];
+extern int accel_loop;
+extern int mainmenuloop;
 extern uint8_t leds_binary;
 extern char msg_acc[35];
 extern int global_variable;
-int sides_acc;//randomly chosen side to tilt
+int sides_acc;
 extern uint8_t templsb;//temp register low
 extern uint8_t tempmsb;//temp register high
 extern uint8_t templ;//buffer for lsb temperature reading
