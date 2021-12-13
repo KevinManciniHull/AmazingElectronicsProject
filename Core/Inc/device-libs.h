@@ -11,6 +11,7 @@
 #include "device-configs.h"
 
 #include "humidity.h"
+#include "joystick.h"
 
 // Include all of our custom libraries here
 
@@ -21,5 +22,7 @@
  * See humidity-tests.h and humidity-tests.c for usage
  */
 
+
+int initAllDevices();
 
 #endif /* INC_DEVICE_LIBS_H_ */

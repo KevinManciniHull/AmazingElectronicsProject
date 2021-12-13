@@ -7,12 +7,25 @@
 
 #include "game-timer.h"
 
-int timer = 0;
+int gameTimer = 0;
 
-void updateTimer(){
-	timer += GAME_TIMER_DELAY_MS;
+void updateTimer(int time){
+	gameTimer += time;
+}
+
+void updateTimer_D(){
+	updateTimer(GAME_TIMER_DELAY_MS);
+}
+
+void wait(int time){
+	HAL_Delay(time);
+	updateTimer(time);
+}
+
+void wait_D(){
+	wait(GAME_TIMER_DELAY_MS);
 }
 
 int getTimeMs(){
-	return timer;
+	return gameTimer;
 }

@@ -19,11 +19,10 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include <stdlib.h>
-#include <stdio.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stm32l475e_iot01.h"
+#include <stdio.h>
 #include <math.h>
 #include "game.h"
 /* USER CODE END Includes */
@@ -41,9 +40,6 @@
 /* USER CODE BEGIN PM */
 #define NUMBER_OF_ATTEMPTS 10
 #define NUMBER_OF_TASKS 6
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
 #ifdef __GNUC__
 /* With GCC/RAISONANCE, small msg_info (option LD Linker->Libraries->Small msg_info
    set to 'Yes') calls __io_putchar() */
@@ -53,6 +49,10 @@
 #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
 #define GETCHAR_PROTOTYPE int fgetc(FILE *f)
 #endif /* __GNUC__ */
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+
 
 DFSDM_Channel_HandleTypeDef hdfsdm1_channel1;
 
@@ -68,26 +68,7 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-float *gyro_value; // Measured value
-char str_tmp[100] = ""; // Formatted message to display the value
-uint8_t msg_state_1[] = "\r\n DEBUG PRINT: TEST_STATE \r\n";
-uint8_t msg_state_2[] = "\r\n DEBUG PRINT: OUT_OF_SERVICE_STATE \r\n";
-uint8_t msg_state_3[] = "\r\n DEBUG PRINT: IDLE_STATE \r\n";
-uint8_t msg_state_4[] = "\r\n DEBUG PRINT: TASK_STATE \r\n";
 
-uint8_t msg_1[] = "WELCOME MESSAGE ... \r\n";
-uint8_t msg_2[] = "CONGRATULATION!!! \r\n";
-uint8_t msg_3[] = "\r\n DEBUG PRINT: DEFAULT SWITCH CASE \r\n";
-uint8_t msg_4[] = "\r\n DEBUG PRINT: TASK\r\n";
-enum state {
-	TEST_STATE,
-	OUT_OF_SERVICE_STATE,
-	IDLE_STATE,
-	TASK_STATE };
-typedef enum state state_t;
-state_t system_state = TEST_STATE;
-unsigned int nAttempt = 0;
-unsigned int nTask = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -101,8 +82,7 @@ static void MX_USART1_UART_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 /* USER CODE BEGIN PFP */
-static int SENSOR_TESTS(void);
-static int RUN_SENSOR_TASK(int current_task);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -160,97 +140,9 @@ int main(void)
 
     /* USER CODE END WHILE */
 
-
-	  /* ===========
-	   * TO BE MOVED
-	   * ===========
-	  switch(system_state){
-	  case TEST_STATE:
-		  HAL_UART_Transmit(&huart1,msg_state_1,sizeof(msg_state_1),1000);
-  		  system_state = SENSOR_TESTS()?IDLE_STATE:OUT_OF_SERVICE_STATE;
-  		  break;
-	  case OUT_OF_SERVICE_STATE:
-		  HAL_UART_Transmit(&huart1,msg_state_2,sizeof(msg_state_2),1000);
-		  HAL_Delay(5000);
-	      break;
-	  case IDLE_STATE:
-		  HAL_UART_Transmit(&huart1,msg_state_3,sizeof(msg_state_3),1000);
-		  HAL_UART_Transmit(&huart1,msg_1,sizeof(msg_1),1000);
-		  snprintf(str_tmp,100,"CLICK BUTTON_USER TO START THE TASK, CURRENT TASK: %u",nTask);
-	          HAL_UART_Transmit(&huart1,( uint8_t * )str_tmp,sizeof(str_tmp),1000);
-		  while(BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_SET);
-		  while(BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_RESET);
-    	  nAttempt = 0;
-    	  system_state = TASK_STATE;
-        break;
-      case TASK_STATE:
-		  HAL_UART_Transmit(&huart1,msg_state_4,sizeof(msg_state_4),1000);
-    	  if (RUN_SENSOR_TASK(nTask)){
-    		  nTask = 0;
-    		  system_state = IDLE_STATE;
-    	  }
-    	  else {
-    		  if (nTask==NUMBER_OF_TASKS){
-    			  HAL_UART_Transmit(&huart1,msg_2,sizeof(msg_2),1000);
-	    		  system_state = OUT_OF_SERVICE_STATE;
-    		  } else {
-	    		  nTask++;
-		    	  system_state = IDLE_STATE;
-    		  }
-    	  }
-    	  break;
-      default:
-		  HAL_UART_Transmit(&huart1,msg_3,sizeof(msg_3),1000);
-	      system_state = OUT_OF_SERVICE_STATE;
-	  }
-	  */
-
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
-}
-
-static int SENSOR_TESTS(void){
-	unsigned int RESULT = 0;  // 0: Correct ; 1: Error
-
-	// Example: RESULT+= gyroscope_test_fuction();
-	// ...
-
-	return !RESULT;
-}
-
-static int RUN_SENSOR_TASK(int current_task){
-	while(nAttempt<NUMBER_OF_ATTEMPTS){
-		unsigned int RESULT = 0;  // 0: Correct ; 1: Error
-		  HAL_UART_Transmit(&huart1,msg_4,sizeof(msg_4),1000);
-		if (current_task==0){
-	  	  // DO THE TASK WITH EXTERNAL FUNCTION RESULT = task_0();
-		}
-		if (current_task==1){
-		  // DO THE TASK WITH EXTERNAL FUNCTION RESULT = task_1();
-		}
-		if (current_task==2){
-		  // DO THE TASK WITH EXTERNAL FUNCTION RESULT = task_2();
-		}
-		if (current_task==3){
-		  // DO THE TASK WITH EXTERNAL FUNCTION RESULT = task_3();
-		}
-		if (current_task==4){
-		  // DO THE TASK WITH EXTERNAL FUNCTION RESULT = task_4();
-		}
-		if (current_task==5){
-		  // DO THE TASK WITH EXTERNAL FUNCTION RESULT = task_5();
-		}
-
-		if (RESULT){ // IF NOT PASSED
-			nAttempt++;
-		} else {
-			return 0; // PASSED
-		}
-	}
-
-	return 1; // FAILED
-
 }
 
 /**
