@@ -23,7 +23,6 @@
 /* USER CODE BEGIN Includes */
 #include "stm32l475e_iot01.h"
 #include <stdio.h>
-#include <math.h>
 #include "game.h"
 /* USER CODE END Includes */
 
@@ -38,8 +37,6 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-#define NUMBER_OF_ATTEMPTS 10
-#define NUMBER_OF_TASKS 6
 #ifdef __GNUC__
 /* With GCC/RAISONANCE, small msg_info (option LD Linker->Libraries->Small msg_info
    set to 'Yes') calls __io_putchar() */
