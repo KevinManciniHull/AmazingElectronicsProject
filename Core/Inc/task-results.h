@@ -12,7 +12,8 @@
 enum task_result{
 	TASK_RUNNING,
 	TASK_FAILED,
-	TASK_PASSED
+	TASK_PASSED,
+	TASK_NOT_STARTED
 };
 
 typedef enum task_result task_result_t;

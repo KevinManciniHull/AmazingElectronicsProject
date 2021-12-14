@@ -16,6 +16,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#define ILLEGAL_TASK_RESULT_ERROR 123
+
 
 enum state {
 	STARTUP_STATE,

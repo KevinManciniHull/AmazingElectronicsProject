@@ -9,10 +9,34 @@
 
 void showStartupError(int code){
 	// print different messages regarding the startup error code from runAllTests function
+	#if USE_DISPLAY == 0
+		switch(code){
+			default:
+				printf("\rGeneral error!\n");
+		}
+	#else
+		switch(code){
+			default:
+				break;
+		}
+	#endif
 }
 
 void showRunError(int code){
-
+	#if USE_DISPLAY == 0
+		switch(code){
+			case ILLEGAL_TASK_RESULT_ERROR:
+				printf("\rTask return illegal state as its result!\n");
+				break;
+			default:
+				printf("\rGeneral error!\n");
+		}
+	#else
+		switch(code){
+			default:
+				break;
+		}
+	#endif
 }
 
 int showMenuPage(int page, state_t state){
@@ -74,6 +98,14 @@ int showGameEndScreen(int score){
 	return 0;
 }
 
+int showRetryScreen(int lives, bool choice){
+	return 0;
+}
+
+bool showTaskInfo(int task){
+	return true;
+}
+
 bool navigateThroughMenu(int * currentPage, int pageCount, bool sigLeft, bool sigRight){
 	if(sigLeft){
 		if(*currentPage == 0){
@@ -92,6 +124,22 @@ bool navigateThroughMenu(int * currentPage, int pageCount, bool sigLeft, bool si
 	return false;
 }
 
+int chooseRandomTask(){
+	return 1;
+}
+
+task_result_t startTask(int task, float difficulty){
+	// here would be switch with all the tasks, each with number from 0 to n
+	// tasks that are blocking (task function has it's own timing and ends with result) should return TASK_FAILED or TASK_PASSED
+	// tasks that use main timing should return TASK_RUNNING, and will be afterwards called on loop
+	return TASK_RUNNING;
+}
+
+task_result_t checkRunningTask(int task){
+	// Here in-loop running tasks will be called until they return either TASK_FAILED or TASK_PASSED
+	return TASK_PASSED;
+}
+
 int runGame(){
 	int result = runAllTests();
 
@@ -104,6 +152,7 @@ int runGame(){
 	state_t currentState = STARTUP_STATE;
 	int currentPage = 0;
 	int pageCount = 1;
+	bool option = true;
 	int JOYSTICK_HOLD_TIME = 600;
 
 	int prevTime = getTimeMs();
@@ -120,15 +169,12 @@ int runGame(){
 	bool sigRight = false;
 	int lastRight = getTimeMs();
 
-	bool up = false;
-	bool sigUp = false;
-	int lastUp = getTimeMs();
-
-	bool down = false;
-	bool sigDown = false;
-	int lastDown = getTimeMs();
-
 	int score = 0;
+	int lives = 3;
+	float currentDifficulty = 1;
+	float difficultyMultiplier = 1.2;
+	int currentTask = -1;
+	task_result_t taskResult = TASK_NOT_STARTED;
 
 
 	while(true){
@@ -159,27 +205,6 @@ int runGame(){
 			sigRight = false;
 		}
 		right = joystickIsRight();
-
-
-		if(joystickIsUp() && (!up || (getTimeMs() - lastUp > JOYSTICK_HOLD_TIME))){
-			sigUp = true;
-			lastUp = getTimeMs();
-		}
-		else{
-			sigUp = false;
-		}
-		up = joystickIsUp();
-
-
-		if(joystickIsDown() && (!down || (getTimeMs() - lastDown > JOYSTICK_HOLD_TIME))){
-			sigDown = true;
-			lastDown = getTimeMs();
-		}
-		else{
-			sigDown = false;
-		}
-		down = joystickIsDown();
-
 
 		switch(currentState){
 			case STARTUP_STATE:
@@ -231,12 +256,106 @@ int runGame(){
 					rendered = false;
 					break;
 				}
+				if(sigPress){
+					switch(currentPage){
+						case 0:
+							currentState = TASK_START_STATE;
+							taskResult = TASK_NOT_STARTED;
+							currentTask = -1;
+							currentDifficulty = 1;
+							rendered = false;
+							break;
+						case 1:
+							currentState = MENU_STATE;
+							currentPage = 0;
+							pageCount = 3;
+							rendered = false;
+							break;
+					}
+				}
 				break;
 			case TASK_START_STATE:
+				if(currentTask == -1){
+					currentTask = chooseRandomTask();
+					if(!showTaskInfo(currentTask)){
+						taskResult = startTask(currentTask, currentDifficulty);
+					}
+					prevTime = getTimeMs();
+					wait(250);
+				}
+				if(taskResult == TASK_NOT_STARTED && (sigPress || (getTimeMs() - prevTime > 3000))){
+					taskResult = startTask(currentTask, currentDifficulty);
+				}
+				if(taskResult != TASK_NOT_STARTED){
+					if(taskResult == TASK_RUNNING){
+						currentState = TASK_RUNNING_STATE;
+					}
+					else if(taskResult == TASK_PASSED){
+						score += 1;
+						currentTask = -1;
+						taskResult = TASK_NOT_STARTED;
+						currentDifficulty *= difficultyMultiplier;
+					}
+					else if(taskResult == TASK_FAILED){
+						lives -= 1;
+						if(lives == 0){
+							currentState = GAME_END_STATE;
+							rendered = false;
+						}
+						else{
+							currentState = TASK_RETRY_STATE;
+							option = true;
+							rendered = false;
+						}
+					}
+					else{
+						result = ILLEGAL_TASK_RESULT_ERROR;
+					}
+					break;
+				}
 				break;
 			case TASK_RUNNING_STATE:
+				taskResult = checkRunningTask(currentTask);
+				if(taskResult == TASK_PASSED){
+					score += 1;
+					currentTask = -1;
+					taskResult = TASK_NOT_STARTED;
+					currentDifficulty *= difficultyMultiplier;
+				}
+				else if(taskResult == TASK_FAILED){
+					lives -= 1;
+					if(lives == 0){
+						currentState = GAME_END_STATE;
+						rendered = false;
+					}
+					else{
+						currentState = TASK_RETRY_STATE;
+						option = true;
+						rendered = false;
+					}
+				}
+				else if(taskResult == TASK_NOT_STARTED){
+					result = ILLEGAL_TASK_RESULT_ERROR;
+				}
 				break;
 			case TASK_RETRY_STATE:
+				if(!rendered){
+					result = showRetryScreen(lives, option);
+					wait(250);
+					rendered = true;
+				}
+				if(sigLeft || sigRight){
+					option = !option;
+					rendered = false;
+					break;
+				}
+				if(sigPress){
+					if(!option){
+						currentTask = -1;
+					}
+					taskResult = TASK_NOT_STARTED;
+					currentState = TASK_START_STATE;
+				}
 				break;
 			case GAME_END_STATE:
 				if(!rendered){
@@ -247,6 +366,12 @@ int runGame(){
 					result = showGameEndScreen(score);
 					wait(250);
 					rendered = true;
+				}
+				if(sigPress){
+					currentState = MENU_STATE;
+					currentPage = 0;
+					pageCount = 3;
+					rendered = false;
 				}
 				break;
 			case LEADERBOARD_STATE:
