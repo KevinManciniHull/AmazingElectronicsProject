@@ -12,6 +12,7 @@
 #include "game-timer.h"
 #include "device-libs.h"
 #include "leaderboard.h"
+#include "task-results.h"
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -29,12 +30,6 @@ enum state {
 };
 
 typedef enum state state_t;
-
-enum task_result{
-	TASK_RUNNING,
-	TASK_FAILED,
-	TASK_PASSED
-};
 
 int runGame();
 
