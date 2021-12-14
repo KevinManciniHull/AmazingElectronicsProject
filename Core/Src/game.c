@@ -5,7 +5,6 @@
  *      Author: tomas
  */
 
-#include <stdbool.h>
 #include "game.h"
 
 void showStartupError(int code){
@@ -22,12 +21,21 @@ int showMenuPage(int page, state_t state){
 			switch(page){
 				case 0:
 					//new game
+					#if USE_DISPLAY == 0
+						printf("\rNew game\n");
+					#endif
 					break;
 				case 1:
 					//leaderboard
+					#if USE_DISPLAY == 0
+						printf("\rLeaderboard\n");
+					#endif
 					break;
 				case 2:
 					//credits
+					#if USE_DISPLAY == 0
+						printf("\rCredits\n");
+					#endif
 					break;
 			}
 			break;
@@ -48,6 +56,9 @@ int showMenuPage(int page, state_t state){
 }
 
 int showStartupScreen(){
+	#if USE_DISPLAY == 0
+		printf("\rStartup\n");
+	#endif
 	return 0;
 }
 
@@ -93,7 +104,7 @@ int runGame(){
 	state_t currentState = STARTUP_STATE;
 	int currentPage = 0;
 	int pageCount = 1;
-	int JOYSTICK_HOLD_TIME = 750;
+	int JOYSTICK_HOLD_TIME = 600;
 
 	int prevTime = getTimeMs();
 	bool rendered = false;
@@ -133,6 +144,7 @@ int runGame(){
 
 		if(joystickIsLeft() && (!left || (getTimeMs() - lastLeft > JOYSTICK_HOLD_TIME))){
 			sigLeft = true;
+			lastLeft = getTimeMs();
 		}
 		else{
 			sigLeft = false;
@@ -141,6 +153,7 @@ int runGame(){
 
 		if(joystickIsRight() && (!right || (getTimeMs() - lastRight > JOYSTICK_HOLD_TIME))){
 			sigRight = true;
+			lastRight = getTimeMs();
 		}
 		else{
 			sigRight = false;
@@ -150,6 +163,7 @@ int runGame(){
 
 		if(joystickIsUp() && (!up || (getTimeMs() - lastUp > JOYSTICK_HOLD_TIME))){
 			sigUp = true;
+			lastUp = getTimeMs();
 		}
 		else{
 			sigUp = false;
@@ -159,6 +173,7 @@ int runGame(){
 
 		if(joystickIsDown() && (!down || (getTimeMs() - lastDown > JOYSTICK_HOLD_TIME))){
 			sigDown = true;
+			lastDown = getTimeMs();
 		}
 		else{
 			sigDown = false;

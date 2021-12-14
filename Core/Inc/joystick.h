@@ -9,6 +9,8 @@
 #define INC_JOYSTICK_H_
 
 #include <stdbool.h>
+#include "stm32l475e_iot01.h"
+#include "device-configs.h"
 
 bool joystickIsPressed();
 

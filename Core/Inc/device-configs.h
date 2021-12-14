@@ -11,4 +11,6 @@
 // When you have the display with you, simply change (on your computer) the value to 1
 #define USE_DISPLAY 0
 
+#define USE_JOYSTICK 0
+
 #endif /* INC_DEVICE_CONFIGS_H_ */

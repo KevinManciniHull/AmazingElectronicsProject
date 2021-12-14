@@ -127,7 +127,7 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
 
-
+  printf("\e[1;1H\e[2J");
   runGame();
 
 

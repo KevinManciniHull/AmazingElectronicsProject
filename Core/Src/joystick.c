@@ -25,5 +25,9 @@ bool joystickIsLeft(){
 }
 
 bool joystickIsRight(){
-	return false;
+	#if USE_JOYSTICK == 0
+		return BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_RESET;
+	#else
+		return false;
+	#endif
 }

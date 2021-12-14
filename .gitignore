@@ -1,3 +1,4 @@
 .mxproject
 .settings/
 Debug/
+*.launch

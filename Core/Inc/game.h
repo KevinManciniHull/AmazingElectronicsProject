@@ -12,6 +12,9 @@
 #include "game-timer.h"
 #include "device-libs.h"
 #include "leaderboard.h"
+#include <stdbool.h>
+#include <stdio.h>
+
 
 enum state {
 	STARTUP_STATE,
