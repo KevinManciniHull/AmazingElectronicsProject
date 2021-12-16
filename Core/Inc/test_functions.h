@@ -11,5 +11,6 @@
 #include "humidity-tests.h"
 
 
+int runAllTests();
 
 #endif /* SRC_TEST_FUNCTIONS_H_ */
