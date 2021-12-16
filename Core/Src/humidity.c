@@ -30,7 +30,7 @@ void writeToHumidityRegister(uint8_t registerAddress, uint8_t value){
 	HAL_I2C_Master_Transmit(&hi2c2, HTS221_WRITE, in, 2, 1000);
 }
 
-void humidityInit(){
+void HTS221Init(){
 	HTS221_H_Init(HTS221_WRITE);
 }
 

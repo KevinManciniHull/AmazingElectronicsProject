@@ -23,7 +23,7 @@ void HTS221valueUnlock();
 
 float humidityGet();
 
-void humidityInit();
+void HTS221Init();
 
 
 #endif /* INC_HUMIDITY_H_ */

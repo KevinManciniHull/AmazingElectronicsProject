@@ -170,9 +170,14 @@ int runGame(){
 	int lastRight = getTimeMs();
 
 	int score = 0;
-	int lives = 3;
 	float currentDifficulty = 1;
+	int lives = 3;
 	float difficultyMultiplier = 1.2;
+
+	#if USE_SD_CARD == 1
+		loadConfig(&lives, &difficultyMultiplier);
+	#endif
+
 	int currentTask = -1;
 	task_result_t taskResult = TASK_NOT_STARTED;
 
@@ -180,31 +185,42 @@ int runGame(){
 	while(true){
 		result = 0;
 
-		if(!joystickIsPressed() && pressed){
-			sigPress = true;
-		}
-		else{
-			sigPress = false;
-		}
-		pressed = joystickIsPressed();
+		#if USE_JOYSTICK == 1
+			if(!joystickIsPressed() && pressed){
+				sigPress = true;
+			}
+			else{
+				sigPress = false;
+			}
+			pressed = joystickIsPressed();
 
-		if(joystickIsLeft() && (!left || (getTimeMs() - lastLeft > JOYSTICK_HOLD_TIME))){
-			sigLeft = true;
-			lastLeft = getTimeMs();
-		}
-		else{
-			sigLeft = false;
-		}
-		left = joystickIsLeft();
+			if(joystickIsLeft() && (!left || (getTimeMs() - lastLeft > JOYSTICK_HOLD_TIME))){
+				sigLeft = true;
+				lastLeft = getTimeMs();
+			}
+			else{
+				sigLeft = false;
+			}
+			left = joystickIsLeft();
 
-		if(joystickIsRight() && (!right || (getTimeMs() - lastRight > JOYSTICK_HOLD_TIME))){
-			sigRight = true;
-			lastRight = getTimeMs();
-		}
-		else{
-			sigRight = false;
-		}
-		right = joystickIsRight();
+			if(joystickIsRight() && (!right || (getTimeMs() - lastRight > JOYSTICK_HOLD_TIME))){
+				sigRight = true;
+				lastRight = getTimeMs();
+			}
+			else{
+				sigRight = false;
+			}
+			right = joystickIsRight();
+		#else
+			if((BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_RESET) && (!right || (getTimeMs() - lastRight > JOYSTICK_HOLD_TIME))){
+				sigRight = true;
+				lastRight = getTimeMs();
+			}
+			else{
+				sigRight = false;
+			}
+			right = BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_RESET;
+		#endif
 
 		switch(currentState){
 			case STARTUP_STATE:

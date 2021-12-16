@@ -9,6 +9,11 @@
 
 
 int initAllDevices(){
-	// init all devices here, return unique positive number when initialization fails
+	HTS221Init();
+	HTS221On();
+
+	if(SDMount() != 0){
+		return 1;
+	}
 	return 0;
 }

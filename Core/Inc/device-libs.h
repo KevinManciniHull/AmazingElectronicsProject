@@ -12,6 +12,7 @@
 
 #include "humidity.h"
 #include "joystick.h"
+#include "sd-card.h"
 
 #include "gyroscope.h"
 #include "stm32l475e_iot01.h"

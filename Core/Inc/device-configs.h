@@ -13,4 +13,6 @@
 
 #define USE_JOYSTICK 0
 
+#define USE_SD_CARD 0
+
 #endif /* INC_DEVICE_CONFIGS_H_ */
