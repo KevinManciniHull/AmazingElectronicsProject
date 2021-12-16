@@ -10,12 +10,13 @@
 
 #include "fatfs.h"
 #include "stm32l475e_iot01.h"
+#include <stdbool.h>
 
 bool isCardPresent();
 
 int SDMount();
 
-int openFile(FIL * file, char * name);
+int openFile(FIL * file, char * name, bool write);
 
 int closeFile(FIL * file);
 
