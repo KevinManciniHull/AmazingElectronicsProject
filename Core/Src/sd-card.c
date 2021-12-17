@@ -45,9 +45,31 @@ int readLine(FIL * file, char * out, int length){
 	char c;
 	int pos = 0;
 	int res = 1;
-	while(c != '\n' && pos != length && res != 0){
-		res = f_gets(out + pos, 1, file);
+	res = f_gets(&c, 1, file);
+	while(c != '\n' && (pos != length - 1) && res != 0){
+		out[pos] = c;
+		res = f_gets(&c, 1, file);
 		pos ++;
 	}
+	if(res == 0){
+		return pos;
+	}
+	if(c != '\n'){
+		out[pos] = c;
+		return pos + 1;
+	}
+	return pos;
+}
 
+int writeLine(FIL * file, char * in, int length){
+	if(!SDFatFSMounted || !isCardPresent){
+		return -1;
+	}
+	int res;
+	int bytesWrote;
+	res = f_write(file, in, length, &bytesWrote);
+	if(bytesWrote != length){
+		return -2;
+	}
+	return res;
 }

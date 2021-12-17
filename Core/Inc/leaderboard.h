@@ -16,4 +16,7 @@
 
 int saveNewScore();
 
+bool loadLeaderboard();
+int getPosition(int pos);
+
 #endif /* INC_LEADERBOARD_H_ */

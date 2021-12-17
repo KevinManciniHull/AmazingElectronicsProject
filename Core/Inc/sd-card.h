@@ -22,5 +22,7 @@ int closeFile(FIL * file);
 
 int readLine(FIL * file, char * out, int length);
 
+int writeLine(FIL * file, char * in, int length);
+
 
 #endif /* INC_SD_CARD_H_ */

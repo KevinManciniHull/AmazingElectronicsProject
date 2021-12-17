@@ -12,8 +12,10 @@ int initAllDevices(){
 	HTS221Init();
 	HTS221On();
 
-	if(SDMount() != 0){
-		return 1;
-	}
+	#if USE_SD_CARD == 1
+		if(SDMount() != 0){
+			return 1;
+		}
+	#endif
 	return 0;
 }

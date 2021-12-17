@@ -13,8 +13,6 @@
 
 extern I2C_HandleTypeDef hi2c2;
 
-float currentHumidityValue = 0;
-
 
 uint8_t readHumidityRegister(uint8_t registerAddress){
 	uint8_t out;
@@ -32,6 +30,7 @@ void writeToHumidityRegister(uint8_t registerAddress, uint8_t value){
 
 void HTS221Init(){
 	HTS221_H_Init(HTS221_WRITE);
+	//HTS221valueLock();
 }
 
 void HTS221On(){

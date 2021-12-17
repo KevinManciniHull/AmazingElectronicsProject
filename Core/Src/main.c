@@ -129,7 +129,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   printf("\e[1;1H\e[2J");
-
+/*
   printf("\r\n~ SD card demo by kiwih ~\r\n\r\n");
 
     HAL_Delay(3000); //a short delay is important to let the SD card settle
@@ -185,16 +185,16 @@ int main(void)
 
     //Be a tidy kiwi - don't forget to close your file!
     f_close(&fil);
+*/
 
-  /*
 
   if(initAllDevices() != 0){
-	  printf("Initialization failure!");
+	  printf("\rInitialization failure!\n");
   }
 
   runGame();
 
-  */
+
 
   /* USER CODE END 2 */
 

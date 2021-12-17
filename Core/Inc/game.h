@@ -9,12 +9,14 @@
 #define INC_GAME_H_
 
 #include "test_functions.h"
+#include "task_functions.h"
 #include "game-timer.h"
 #include "device-libs.h"
 #include "leaderboard.h"
 #include "task-results.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define ILLEGAL_TASK_RESULT_ERROR 123
 

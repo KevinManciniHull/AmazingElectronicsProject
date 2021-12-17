@@ -9,6 +9,7 @@
 #define INC_CONFIGURATION_H_
 
 #include <stdbool.h>
+#include <stdlib.h>
 #include "sd-card.h"
 
 bool loadConfig(int * lives, float * diffMult);

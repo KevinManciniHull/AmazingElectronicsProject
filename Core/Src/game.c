@@ -80,7 +80,9 @@ int showMenuPage(int page, state_t state){
 }
 
 int showStartupScreen(){
-	#if USE_DISPLAY == 0
+	#if USE_DISPLAY == 1
+
+	#else
 		printf("\rStartup\n");
 	#endif
 	return 0;
@@ -95,15 +97,42 @@ int showCreditsScreen(){
 }
 
 int showGameEndScreen(int score){
+	#if USE_DISPLAY == 1
+
+	#else
+		printf("\rGame over! Final score: %d\n", score);
+	#endif
 	return 0;
 }
 
 int showRetryScreen(int lives, bool choice){
+	#if USE_DISPLAY == 1
+
+	#else
+		printf("\rYou have %d lives left. Do you wish to repeat current task?\n", lives);
+		printf("\r%s\n", choice ? "YES" : "NO");
+	#endif
 	return 0;
 }
 
 bool showTaskInfo(int task){
-	return true;
+	switch(task){
+		case 0:
+			humidityShowTaskInfo();
+			return true;
+		case 1:
+			return false;
+		case 2:
+			return false;
+		case 3:
+			return false;
+		case 4:
+			return false;
+		case 5:
+			return false;
+		default:
+			return false;
+	}
 }
 
 bool navigateThroughMenu(int * currentPage, int pageCount, bool sigLeft, bool sigRight){
@@ -125,19 +154,49 @@ bool navigateThroughMenu(int * currentPage, int pageCount, bool sigLeft, bool si
 }
 
 int chooseRandomTask(){
-	return 1;
+	return 0;//return rand() % 6;
 }
 
 task_result_t startTask(int task, float difficulty){
 	// here would be switch with all the tasks, each with number from 0 to n
 	// tasks that are blocking (task function has it's own timing and ends with result) should return TASK_FAILED or TASK_PASSED
 	// tasks that use main timing should return TASK_RUNNING, and will be afterwards called on loop
-	return TASK_RUNNING;
+	switch(task){
+		case 0:
+			return humidityStartTask(difficulty);
+		case 1:
+			return TASK_PASSED;
+		case 2:
+			return TASK_PASSED;
+		case 3:
+			return TASK_PASSED;
+		case 4:
+			return TASK_PASSED;
+		case 5:
+			return TASK_PASSED;
+		default:
+			return TASK_PASSED;
+	}
 }
 
 task_result_t checkRunningTask(int task){
 	// Here in-loop running tasks will be called until they return either TASK_FAILED or TASK_PASSED
-	return TASK_PASSED;
+	switch(task){
+		case 0:
+			return humidityCheckTaskState();
+		case 1:
+			return TASK_PASSED;
+		case 2:
+			return TASK_PASSED;
+		case 3:
+			return TASK_PASSED;
+		case 4:
+			return TASK_PASSED;
+		case 5:
+			return TASK_PASSED;
+		default:
+			return TASK_PASSED;
+	}
 }
 
 int runGame(){
@@ -149,7 +208,7 @@ int runGame(){
 		return 1;
 	}
 
-	state_t currentState = STARTUP_STATE;
+	state_t currentState = TASK_START_STATE;//STARTUP_STATE;
 	int currentPage = 0;
 	int pageCount = 1;
 	bool option = true;
@@ -212,14 +271,16 @@ int runGame(){
 			}
 			right = joystickIsRight();
 		#else
-			if((BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_RESET) && (!right || (getTimeMs() - lastRight > JOYSTICK_HOLD_TIME))){
-				sigRight = true;
-				lastRight = getTimeMs();
+			if((BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_RESET) && (pressed/*!right || (getTimeMs() - lastRight > JOYSTICK_HOLD_TIME)*/)){
+				//sigRight = true;
+				//lastRight = getTimeMs();
+				sigPress = true;
 			}
 			else{
-				sigRight = false;
+				//sigRight = false;
+				sigPress = false;
 			}
-			right = BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_RESET;
+			/*right*/pressed = BSP_PB_GetState(BUTTON_USER) == GPIO_PIN_RESET;
 		#endif
 
 		switch(currentState){

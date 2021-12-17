@@ -10,4 +10,6 @@
 
 // import file with task logic here
 
+#include "humidity-task.h"
+
 #endif /* SRC_TASK_FUNCTIONS_H_ */
